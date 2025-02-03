@@ -18,17 +18,29 @@ func EncodeMessage(a any) string{
     return fmt.Sprintf("Content-Length %d \r\n\r\n%s", len(msg), msg)
 }
 
-func DecodeMessage(msg []byte) (int, error) {
-    // We will get back to this
-    header, _, found := bytes.Cut(msg, []byte{'\r', '\n', '\r', '\n'})
+type BaseMessage struct{
+    Method string `json:"method"`
+}
+
+
+func DecodeMessage(msg []byte) ([]byte, string,error) {
+    header, content, found := bytes.Cut(msg, []byte{'\r', '\n', '\r', '\n'})
     if !found{
-        return 0, errors.New("content not found")
+        return nil, "", errors.New("content not found")
     }
     contentSizeBytes := header[len("Content-Length: "):]
-    contentSize, err:= strconv.Atoi(string(contentSizeBytes))
+    _, err := strconv.Atoi(string(contentSizeBytes))
     if err != nil{
-        return 0, errors.New("invalid content size")
+        return nil, "", errors.New("invalid content size")
     }
-    return contentSize, nil
+    var baseMsg BaseMessage 
+    if err := json.Unmarshal([]byte(content), &baseMsg); err != nil{
+        return nil, "", err
+    }
+    return content, baseMsg.Method, nil
 }
+
+
+
+
 
