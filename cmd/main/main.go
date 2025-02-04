@@ -64,5 +64,5 @@ func getLogger(filename string) *log.Logger {
 	if err != nil {
 		log.Fatal("error: ", err)
 	}
-	return log.New(file, "[educationallsp]", log.Ldate|log.Lshortfile)
+	return log.New(file, "[educationallsp]", log.Ldate|log.Ltime|log.Lshortfile)
 }
