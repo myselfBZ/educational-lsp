@@ -41,6 +41,7 @@ func handleMsg(method string, content []byte, l *log.Logger) {
     }
 }
 
+// testing a comment
 func Split(msg []byte, _ bool) (advance int, token []byte, err error) {
 	header, content, found := bytes.Cut(msg, []byte{'\r', '\n', '\r', '\n'})
 	if !found {
