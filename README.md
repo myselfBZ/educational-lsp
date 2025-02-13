@@ -1,1 +1,1 @@
-# LSP for the monkey programming language
+toy project
